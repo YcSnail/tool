@@ -1,0 +1,91 @@
+{include file="public/header" /}
+
+
+<style>
+
+
+    .layui-col-md3{
+        height: 200px;
+    }
+
+    .btn-div{
+        position:absolute;
+        left:50%;
+        top:50%;
+        margin: 0 auto;
+        margin-left: -100px;
+        margin-top: -50px;
+    }
+
+    .btn-Transformation{
+        width: 200px;
+        height: 100px;
+    }
+
+    .layui-row{
+        margin-top: 80px;
+    }
+
+    .layui-input-block {
+         margin-left: 0;
+    }
+
+</style>
+
+
+
+<div class="layui-row">
+
+    <div class="layui-col-md3 layui-col-md-offset1">
+        <div class="layui-card">
+            <div class="layui-card-header">输入要转换的文本</div>
+            <div class="layui-card-body">
+
+                <form class="layui-form">
+                    <div class="layui-form-item layui-form-text">
+                        <div class="layui-input-block">
+                            <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-col-md3">
+        <div class="btn-div">
+            <button class="layui-btn layui-btn-fluid btn-Transformation">转换</button>
+        </div>
+    </div>
+
+    <div class="layui-col-md3 layui-col-md-offset1">
+        <div class="layui-card">
+            <div class="layui-card-header">转换后的二维码</div>
+            <div class="layui-card-body">
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+<script>
+    $().ready(function () {
+
+        layui.use('form', function(){
+            var form = layui.form;
+
+
+        });
+
+
+    });
+</script>
