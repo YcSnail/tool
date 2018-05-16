@@ -63,7 +63,7 @@
     <div class="layui-col-md3 layui-col-md-offset1">
         <div class="layui-card">
             <div class="layui-card-header">转换后的二维码</div>
-            <div class="layui-card-body">
+            <div class="layui-card-body qrcodeImg">
 
             </div>
         </div>
@@ -80,9 +80,37 @@
 <script>
     $().ready(function () {
 
-        layui.use('form', function(){
-            var form = layui.form;
+        $('.btn-Transformation').click(function () {
 
+            // 检查是否有数据
+            var text = $('.layui-textarea').val();
+
+            if (text ==''){
+                layer.msg('内容不能为空!');
+                return false;
+            }
+
+            // 请求数据
+
+            var url = 'api/qrcode/getQrcode';
+            $.post(
+                url,
+                {
+                    'text':text
+                },
+                function(res){
+
+                    if (res.code == 0){
+                        var qrImg = '<img src="'+res.mssage+'" />';
+                        $('.qrcodeImg').empty();
+                        $('.qrcodeImg').append(qrImg);
+
+                    }else{
+                        layer.msg(res.mssage);
+                    }
+
+                },'JSON'
+            );
 
         });
 

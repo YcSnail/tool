@@ -19,7 +19,7 @@
 function ajaxRes($code =0, $msg = '保存成功'){
     $arr = array(
         'code' => $code,
-        'message' => $msg
+        'mssage' => $msg
     );
     die(json_encode($arr));
 }
