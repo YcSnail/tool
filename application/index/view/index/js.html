@@ -1,5 +1,9 @@
 {include file="public/header" /}
 
+<script src="/static/qrcode/qrcode.js"></script>
+
+<script src="/static/farbtastic/js/farbtastic.js"></script>
+<link rel="stylesheet" href="/static/farbtastic/css/farbtastic.css">
 
 <style>
 
@@ -27,7 +31,13 @@
     }
 
     .layui-input-block {
-         margin-left: 0;
+        margin-left: 0;
+    }
+
+    .color{
+        float: left;
+        width: 200px;
+        height: 200px;
     }
 
 </style>
@@ -63,27 +73,48 @@
     <div class="layui-col-md3 layui-col-md-offset1">
         <div class="layui-card">
             <div class="layui-card-header">转换后的二维码</div>
-            <div class="layui-card-body qrcodeImg">
+            <div class="layui-card-body" id="qrcodeImg">
 
             </div>
         </div>
     </div>
-
-
 </div>
 
 
+<div>
+    <p class="color colorDark"></p>
+    <p class="color colorLight"></p>
+</div>
 
+<div id="colorpicker"></div>
 
+<style>
+    .colorDark{
+        background-color: #43a4c3 ;
+    }
+    .colorLight{
+        background-color: #d56666;
+    }
 
+</style>
 
 <script>
     $().ready(function () {
 
-        setTitle('PHP生成二维码');
+        setTitle('js生成二维码');
+
+
+        $('.layui-nav > .layui-nav-item').removeClass('layui-this');
+        $('.layui-nav > .layui-nav-item:eq(1)').addClass('layui-this');
+
+        $('#colorpicker').farbtastic('.colorDark');
+        $('#colorpicker').farbtastic('.colorLight');
 
 
         $('.btn-Transformation').click(function () {
+
+            var colorDark = rgb2hex($('.colorDark').css('background-color'));
+            var colorLight = rgb2hex($('.colorLight').css('background-color'));
 
             // 检查是否有数据
             var text = $('.layui-textarea').val();
@@ -93,29 +124,35 @@
                 return false;
             }
 
-            // 请求数据
+            $('.qrcodeImg').empty();
 
-            var url = 'api/qrcode/getQrcode';
-            $.post(
-                url,
-                {
-                    'text':text
-                },
-                function(res){
 
-                    if (res.code == 0){
-                        var qrImg = '<img src="'+res.mssage+'" />';
-                        $('.qrcodeImg').empty();
-                        $('.qrcodeImg').append(qrImg);
+            var qrcode = new QRCode('qrcodeImg', {
+                width: 256,
+                height: 256,
+                colorDark : colorDark,
+                colorLight : colorLight,
+                correctLevel : QRCode.CorrectLevel.H
+            });
 
-                    }else{
-                        layer.msg(res.mssage);
-                    }
-
-                },'JSON'
-            );
+            // 使用 API
+            qrcode.clear();
+            qrcode.makeCode(text);
 
         });
+
+
+        $('.layui-textarea').val('yuanxu');
+        $('.btn-Transformation').click();
+
+
+        function rgb2hex(rgb) {
+            rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            function hex(x) {
+                return ("0" + parseInt(x).toString(16)).slice(-2);
+            }
+            return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+        }
 
 
     });
